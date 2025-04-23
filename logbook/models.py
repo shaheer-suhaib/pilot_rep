@@ -1,4 +1,5 @@
 from django.db import models
+# represent   database Tables
 
 class FlightLog(models.Model):
     aircraft_type = models.CharField(max_length=100)

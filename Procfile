@@ -1,1 +1,1 @@
-web: gunicorn pilotlogbook.wsgi
+web: gunicorn pilotlogbook.wsgi  
