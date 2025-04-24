@@ -8,7 +8,7 @@ SECRET_KEY = 'django-insecure-l93ghg^s#vehdg7kc#9bh(q5vbx&7o^6lg_qsku#h#3q547rp9
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pilotrep-production.up.railway.app']
 
 
 
