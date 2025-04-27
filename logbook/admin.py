@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import FlightLog
+from .models import User
 
-admin.site.register(FlightLog)
+admin.site.register(User)

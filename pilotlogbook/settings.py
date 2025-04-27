@@ -8,12 +8,12 @@ SECRET_KEY = 'django-insecure-l93ghg^s#vehdg7kc#9bh(q5vbx&7o^6lg_qsku#h#3q547rp9
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['pilotrep-production.up.railway.app']
+ALLOWED_HOSTS = ['pilotrep-production.up.railway.app','127.0.0.1']
 
 
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+   'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -22,6 +22,8 @@ INSTALLED_APPS = [
     'logbook',#..................                  also add  rest framwork
     'rest_framework',
     'corsheaders',
+
+       
 ]
 
 MIDDLEWARE = [
@@ -125,3 +127,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+AUTH_USER_MODEL = 'logbook.User'  # for def
+
