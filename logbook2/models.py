@@ -51,7 +51,7 @@ class Checker(models.Model):
 
 class Aircraft(models.Model):
     aircraft_id = models.AutoField(primary_key=True)
-    typee = models.CharField(max_length=50, null=False, blank=False)
+    typee = models.CharField(max_length=50, null=True, blank=True)
     tail_no = models.CharField(max_length=50,null=True, blank=True)
 
 

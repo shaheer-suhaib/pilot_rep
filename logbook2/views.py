@@ -114,6 +114,7 @@ def post_flight_log_for_user(request, user_id):
         typee = request.data.get('typee')
         tail_no = request.data.get('tail_no')
         aircraft_obj = Aircraft.objects.create(typee=typee, tail_no=tail_no)
+
         
         # Step 2: Create FlightCategory
         engine = request.data['engine']
@@ -121,6 +122,7 @@ def post_flight_log_for_user(request, user_id):
         mission = request.data['mission']
         flight_cat_obj = FlightCategory.objects.create(engine=engine, role=role, mission=mission)
         
+      
         # Step 3: Now create FlightLog
         try:
             pilot = Pilot.objects.get(pilot_id=user_id)
