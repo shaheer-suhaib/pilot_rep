@@ -82,7 +82,7 @@ def post_aircraft_for_user(request, user_id):
      except User.DoesNotExist:
             return Response({"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND)
      
-     obj = Aircraft.objects.create(type =data['type'])
+     obj = Aircraft.objects.create(type =data['type'], tail_no=data['tail_no'])
      
      serialzed = AircraftSerializer(obj,many=False)
     
@@ -99,7 +99,7 @@ def postF_category_for_user(request, user_id):
      except User.DoesNotExist:
             return Response({"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND)
      
-     obj = FlightCategory.objects.create(engine = data['engine'],role = data['role'])
+     obj = FlightCategory.objects.create(engine = data['engine'],role = data['role'], mission=data['mission'])
      
      serialzed = FlightCategorySerializer(obj,many=False)
     
@@ -121,8 +121,14 @@ def post_flight_log_for_user(request, user_id, AirCraID, FlighCatID):
         obj = FlightLog.objects.create(
             date=data['date'],
             route=data['route'],
-            remarks=data['remarks'],
+            Additional_note=data['Additional_note'],
             duration=data['duration'],
+             Pilot_in_comm=data.get('Pilot_in_comm'),
+            Co_Pilot=data.get('Co_Pilot'),
+            Take_off_time=data.get('Take_off_time'),
+            Landing_time=data.get('Landing_time'),
+            Instrument_Flu=data.get('Instrument_Flu'),
+            Day_night=data.get('Day_night'),
             pilot_id=Pilot.objects.get(pilot_id=user_id),       
             aircraft_id= aircrft,                           
             category_id= F_cat

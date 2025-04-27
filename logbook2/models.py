@@ -52,32 +52,34 @@ class Checker(models.Model):
 class Aircraft(models.Model):
     aircraft_id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=50)
+    tail_no = models.CharField(max_length=50,null=True, blank=True)
+
 
 class FlightCategory(models.Model):
     category_id = models.AutoField(primary_key=True)
 
-    ENGINE_CHOICES = (
-        (1, 'Single Engine'),
-        (2, 'Multi Engine'),
-    )
+    engine =  models.CharField(max_length=50,null=True, blank=True)
 
-    ROLE_CHOICES = (
-        (1, 'ICUS'),
-        (2, 'DUAL'),
-        (3, 'COMMAND'),
-        (4, 'COPILOT'),
-    )
+    role =  models.CharField(max_length=50,null=True, blank=True)
 
-    engine = models.IntegerField(choices=ENGINE_CHOICES)
-    role = models.IntegerField(choices=ROLE_CHOICES)
+    mission  = models.CharField(max_length=50,null=True, blank=True)
+
 
 class FlightLog(models.Model):
     id = models.AutoField(primary_key=True)  # ADDING THIS solves your problem
     date = models.DateField(null=True, blank=True)
     route = models.CharField(max_length=50, null=True, blank=True)
-    remarks = models.CharField(max_length=255, null=True, blank=True)
+    Additional_note = models.CharField(max_length=255, null=True, blank=True)
     duration = models.IntegerField(null=True, blank=True)
+
+    Pilot_in_comm = models.CharField(max_length=50,null=True, blank=True)
+    Co_Pilot = models.CharField(max_length=50,null=True, blank=True)
+    Take_off_time = models.DateTimeField(null=True, blank=True)
+    Landing_time = models.DateTimeField(null=True, blank=True)
+    Instrument_Flu =  models.CharField(max_length=50,null=True, blank=True)
+    Day_night  =  models.CharField(max_length=50,null=True, blank=True)
 
     pilot_id = models.ForeignKey(Pilot, on_delete=models.CASCADE, to_field='pilot_id', null=True, blank=True)
     aircraft_id = models.ForeignKey(Aircraft, on_delete=models.CASCADE, to_field='aircraft_id', null=True, blank=True)
     category_id = models.ForeignKey(FlightCategory, on_delete=models.CASCADE, to_field='category_id', null=True, blank=True)
+

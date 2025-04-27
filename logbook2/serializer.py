@@ -19,12 +19,12 @@ class CheckerSerializer(serializers.ModelSerializer):
 class AircraftSerializer(serializers.ModelSerializer):
     class Meta:
         model = Aircraft
-        fields = [ 'type']
+        fields = [ 'type','tail_no']
 
 class FlightCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = FlightCategory
-        fields = [ 'engine', 'role']
+        fields = [ 'engine', 'role','mission']
 
 class FlightLogSerializer(serializers.ModelSerializer):
     pilot_id = PilotSerializer()
@@ -33,4 +33,4 @@ class FlightLogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FlightLog
-        fields = [ 'date', 'route', 'remarks', 'duration', 'pilot_id', 'aircraft_id', 'category_id']
+        fields = [ 'date', 'route', 'Additional_note', 'duration', 'Pilot_in_comm','Co_Pilot','Take_off_time','Landing_time','Instrument_Flu','Day_night','pilot_id', 'aircraft_id', 'category_id']
