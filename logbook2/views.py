@@ -110,9 +110,9 @@ def post_flight_log_for_user(request, user_id):
     if request.method == 'POST':
     
        # Step 1: Create Aircraft
-        type = request.data['type']
+        typee = request.data['type']
         tail_no = request.data['tail_no']
-        aircraft_obj = Aircraft.objects.create(type=type, tail_no=tail_no)
+        aircraft_obj = Aircraft.objects.create(type=typee, tail_no=tail_no)
         
         # Step 2: Create FlightCategory
         engine = request.data['engine']
@@ -149,6 +149,22 @@ def post_flight_log_for_user(request, user_id):
 
         return Response(serializer.data)
 
+
+@api_view(['PUT'])
+def apply_read(request, pilot_id):
+  try:
+        # Fetch the FlightLog object with the specified pilot_id
+        obj = FlightLog.objects.filter(pilot_id=pilot_id)
+        obj.update(read=True)
+        
+      
+
+        return Response({"message": "Read status updated successfully"}, status=status.HTTP_200_OK)
+    
+  except FlightLog.DoesNotExist:
+        return Response({"error": "FlightLog with this pilot_id not found"}, status=status.HTTP_404_NOT_FOUND)
+     
+     
 
 
 @api_view(['GET'])
@@ -200,3 +216,16 @@ def filter_flight_logs(request):
 
     # Return the response
     return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+def get_marked(request):
+     
+    Marked_logs = FlightLog.objects.filter(read=True)
+
+    serializer = FlightLogSerializer(Marked_logs, many=True)
+
+  
+    return Response(serializer.data)
+

@@ -68,7 +68,9 @@ class FlightCategory(models.Model):
 class FlightLog(models.Model):
     id = models.AutoField(primary_key=True)  # ADDING THIS solves your problem
     date = models.DateField(null=True, blank=True)
+
     route = models.CharField(max_length=50, null=True, blank=True)
+    
     Additional_note = models.CharField(max_length=255, null=True, blank=True)
     duration = models.IntegerField(null=True, blank=True)
 

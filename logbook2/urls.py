@@ -16,6 +16,8 @@ urlpatterns = [
 
     path('api/checker/filter/', views.filter_flight_logs, name='filter_flight_logs'),
 
+    path('api/checker/apply_marked/<int:pilot_id>' , views.apply_read,  name='apply_Read'),
+    path('api/checker/get_marked/' , views.get_marked,  name='Show Marked Tasks'),
 
 
 ]

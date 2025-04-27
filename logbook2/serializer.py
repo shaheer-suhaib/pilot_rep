@@ -33,4 +33,4 @@ class FlightLogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FlightLog
-        fields = [ 'date', 'route', 'Additional_note', 'duration', 'Pilot_in_comm','Co_Pilot','Take_off_time','Landing_time','Instrument_Flu','Day_night','pilot_id', 'aircraft_id', 'category_id']
+        fields = [ 'date', 'route', 'Additional_note', 'duration', 'Pilot_in_comm','Co_Pilot','Take_off_time','Landing_time','Instrument_Flu','Day_night','pilot_id', 'aircraft_id', 'category_id','read']
