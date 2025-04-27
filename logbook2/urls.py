@@ -9,8 +9,12 @@ urlpatterns = [
     path('api/new_user/pilot_sub/', views.create_pilot, name='create_pilot'),
 
     path('api/new_user/checker_sub/', views.create_checker, name='create_checker'),
-    path('api/new_user/today_data/FlightLog/<int:user_id>/<int:AirCraID>/<int:FlighCatID>/', views.post_flight_log_for_user, name='create_flight_log_for_user'),
 
+    path('api/new_user/today_data/FlightLog/<int:user_id>/', views.post_flight_log_for_user, name='create_flight_log_for_user'),
+  
+    path('api/checker/today_data/get_data/', views.get_flight_log, name='getDataForChecker'),
+
+    path('api/checker/filter/', views.filter_flight_logs, name='filter_flight_logs'),
 
 
 

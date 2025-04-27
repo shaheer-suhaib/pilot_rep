@@ -106,36 +106,97 @@ def postF_category_for_user(request, user_id):
      return Response(serialzed.data)  # ends the serialized data back to the client as a response 
 
 @api_view(['POST'])
-def post_flight_log_for_user(request, user_id, AirCraID, FlighCatID):
+def post_flight_log_for_user(request, user_id):
     if request.method == 'POST':
+    
+       # Step 1: Create Aircraft
+        type = request.data['type']
+        tail_no = request.data['tail_no']
+        aircraft_obj = Aircraft.objects.create(type=type, tail_no=tail_no)
+        
+        # Step 2: Create FlightCategory
+        engine = request.data['engine']
+        role = request.data['role']
+        mission = request.data['mission']
+        flight_cat_obj = FlightCategory.objects.create(engine=engine, role=role, mission=mission)
+        
+        # Step 3: Now create FlightLog
         try:
-            user = User.objects.get(id=user_id)   #change to
-            aircrft = Aircraft.objects.get(aircraft_id=AirCraID)
-            F_cat = FlightCategory.objects.get(category_id=FlighCatID)
-
-        except (User.DoesNotExist, Aircraft.DoesNotExist, FlightCategory.DoesNotExist):
-            return Response({"detail": "User, Aircraft, or Category not found"}, status=status.HTTP_404_NOT_FOUND)
+            pilot = Pilot.objects.get(pilot_id=user_id)
+        except (User.DoesNotExist, Pilot.DoesNotExist):
+            return Response({"detail": "User or Pilot not found"}, status=status.HTTP_404_NOT_FOUND)
         
         data = request.data
-        
+
         obj = FlightLog.objects.create(
             date=data['date'],
             route=data['route'],
             Additional_note=data['Additional_note'],
             duration=data['duration'],
-             Pilot_in_comm=data.get('Pilot_in_comm'),
-            Co_Pilot=data.get('Co_Pilot'),
-            Take_off_time=data.get('Take_off_time'),
-            Landing_time=data.get('Landing_time'),
-            Instrument_Flu=data.get('Instrument_Flu'),
-            Day_night=data.get('Day_night'),
-            pilot_id=Pilot.objects.get(pilot_id=user_id),       
-            aircraft_id= aircrft,                           
-            category_id= F_cat
+            Pilot_in_comm=data['Pilot_in_comm'],
+            Co_Pilot=data['Co_Pilot'],
+            Take_off_time=data['Take_off_time'],
+            Landing_time=data['Landing_time'],
+            Instrument_Flu=data['Instrument_Flu'],
+            Day_night=data['Day_night'],
+            pilot_id=Pilot.objects.get(pilot_id=user_id),
+            aircraft_id=aircraft_obj,
+            category_id=flight_cat_obj
+        )
 
-
-            )
 
         serializer = FlightLogSerializer(obj, many=False)
 
         return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+def get_flight_log(request):
+    if request.method == 'GET':
+        # Get the 'read' parameter from the query string
+        read = request.query_params.get('read', None)
+
+        flight_logs = FlightLog.objects.all()
+
+        # Apply filters based on the presence of parameters
+        if read is not None:  # Check if 'read' is provided in the query params
+            if read.lower() == 'false':  # If read is 'false', filter for False values
+                flight_logs = flight_logs.filter(read=False)
+          
+
+      
+        serializer = FlightLogSerializer(flight_logs, many=True)
+        return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+def filter_flight_logs(request):
+    # Extract filter parameters from the request
+    pilot_id = request.query_params.get('pilot_id', None)
+    route = request.query_params.get('route', None)
+    all_pilot = request.query_params.get('All_pilot', None)
+    all_route = request.query_params.get('All_route', None)
+
+    # Start with all flight logs
+    flight_logs = FlightLog.objects.all()
+
+    # Apply filters based on the query parameters
+    if pilot_id:
+        flight_logs = flight_logs.filter(pilot_id=pilot_id)
+
+    if route:
+        flight_logs = flight_logs.filter(route=route)
+
+    if all_pilot == 'true':
+        flight_logs = flight_logs.all()  # No filter on pilot, get all pilots
+
+    if all_route == 'true':
+        flight_logs = flight_logs.all()  # No filter on route, get all routes
+
+    # Serialize the filtered queryset
+    serializer = FlightLogSerializer(flight_logs, many=True)
+
+    # Return the response
+    return Response(serializer.data)

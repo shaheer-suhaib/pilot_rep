@@ -72,6 +72,9 @@ class FlightLog(models.Model):
     Additional_note = models.CharField(max_length=255, null=True, blank=True)
     duration = models.IntegerField(null=True, blank=True)
 
+    read = models.BooleanField(null=True, blank=False, default=False)
+
+
     Pilot_in_comm = models.CharField(max_length=50,null=True, blank=True)
     Co_Pilot = models.CharField(max_length=50,null=True, blank=True)
     Take_off_time = models.DateTimeField(null=True, blank=True)
