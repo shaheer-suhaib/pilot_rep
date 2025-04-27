@@ -108,11 +108,12 @@ def postF_category_for_user(request, user_id):
 @api_view(['POST'])
 def post_flight_log_for_user(request, user_id):
     if request.method == 'POST':
+        print(request.data)
     
        # Step 1: Create Aircraft
-        typee = request.data.get('type')
+        typee = request.data.get('typee')
         tail_no = request.data.get('tail_no')
-        aircraft_obj = Aircraft.objects.create(type=typee, tail_no=tail_no)
+        aircraft_obj = Aircraft.objects.create(typee=typee, tail_no=tail_no)
         
         # Step 2: Create FlightCategory
         engine = request.data['engine']

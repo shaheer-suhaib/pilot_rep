@@ -34,7 +34,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255, blank=True, default='')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-
+    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['id']
 
@@ -51,7 +51,7 @@ class Checker(models.Model):
 
 class Aircraft(models.Model):
     aircraft_id = models.AutoField(primary_key=True)
-    type = models.CharField(max_length=50)
+    typee = models.CharField(max_length=50, null=False, blank=False)
     tail_no = models.CharField(max_length=50,null=True, blank=True)
 
 
@@ -70,7 +70,7 @@ class FlightLog(models.Model):
     date = models.DateField(null=True, blank=True)
 
     route = models.CharField(max_length=50, null=True, blank=True)
-    
+
     Additional_note = models.CharField(max_length=255, null=True, blank=True)
     duration = models.IntegerField(null=True, blank=True)
 

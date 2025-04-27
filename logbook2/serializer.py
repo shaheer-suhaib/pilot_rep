@@ -19,7 +19,7 @@ class CheckerSerializer(serializers.ModelSerializer):
 class AircraftSerializer(serializers.ModelSerializer):
     class Meta:
         model = Aircraft
-        fields = [ 'type','tail_no']
+        fields = [ 'typee','tail_no']
 
 class FlightCategorySerializer(serializers.ModelSerializer):
     class Meta:
