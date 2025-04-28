@@ -4,11 +4,11 @@ from django.utils import timezone
 
 class CustomUserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
-        # if not email:
-        #     raise ValueError("You have not provided a valid e-mail address")
+        if not email:
+            raise ValueError("You have not provided a valid e-mail address")
         user_id = extra_fields.pop('id', None)
-        # if not user_id:
-        #     raise ValueError("You have not provided a valid ID")
+        if not user_id:
+            raise ValueError("You have not provided a valid ID")
         email = self.normalize_email(email)
         user = self.model(email=email, id=user_id, **extra_fields)
         if password:
