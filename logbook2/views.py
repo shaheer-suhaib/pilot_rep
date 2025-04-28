@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .models import User, Pilot, Checker, Aircraft, FlightCategory, FlightLog
 from .serializer import UserSerializer, AircraftSerializer, FlightCategorySerializer, FlightLogSerializer, PilotSerializer, CheckerSerializer
 from datetime import datetime
+import json
 # Create a new user
 @api_view(['POST'])
 def create_user(request):
@@ -50,9 +51,17 @@ def create_pilot(request):
     print("========= DEBUG PRODUCTION =========")
     print("Full Request Data:", request.data)
 
-    email = request.data.get('email')
-    user_id = request.data.get('id')
-    name = request.data.get('name')
+    data = request.data
+    if '_content' in data:
+        try:
+            data = json.loads(data['_content'][0])  # Parse the JSON string inside _content
+        except Exception as e:
+            print("Error parsing _content:", str(e))
+            return Response({"detail": "Invalid content format"}, status=status.HTTP_400_BAD_REQUEST)
+
+    email = data.get('email')
+    user_id = data.get('id')
+    name = data.get('name')
 
     print("Email:", email)
     print("User ID:", user_id)
