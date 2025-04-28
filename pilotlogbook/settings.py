@@ -66,7 +66,7 @@ import dj_database_url
 
 
 
-DATABASE_URL="postgresql://postgres:VwPvXOaZCPMlyzXCdULwSjtaGNoKovIt@nozomi.proxy.rlwy.net:37694/railway"
+DATABASE_URL="postgresql://postgres:zbePzzNAauboABuuIGwybYjgtjFbKqpW@maglev.proxy.rlwy.net:33291/railway"
 
 
 
