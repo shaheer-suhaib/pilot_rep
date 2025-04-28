@@ -26,9 +26,9 @@ def create_user(request):
 def create_pilot(request):
     try:
         # Extract user data
-        email = request.data['email']
-        user_id = request.data['id']
-        name = request.data['name']
+        email = request.data.get('email')
+        user_id = request.data('id')
+        name = request.data('name')
         
         # Create the User object
         user = User.objects.create_user(email=email, id=user_id,name=name)
