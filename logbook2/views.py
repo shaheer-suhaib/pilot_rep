@@ -132,16 +132,16 @@ def post_flight_log_for_user(request, user_id):
         data = request.data
 
         obj = FlightLog.objects.create(
-            date=data['date'],
-            route=data['route'],
-            Additional_note=data['Additional_note'],
-            duration=data['duration'],
-            Pilot_in_comm=data['Pilot_in_comm'],
-            Co_Pilot=data['Co_Pilot'],
-            Take_off_time=data['Take_off_time'],
-            Landing_time=data['Landing_time'],
-            Instrument_Flu=data['Instrument_Flu'],
-            Day_night=data['Day_night'],
+            date=data.get('date'),
+            route=data.get('route'),
+            Additional_note=data.get('Additional_note'),
+            duration=data.get('duration'),
+            Pilot_in_comm=data.get('Pilot_in_comm'),
+            Co_Pilot=data.get('Co_Pilot'),
+            Take_off_time=data.get('Take_off_time'),
+            Landing_time=data.get('Landing_time'),
+            Instrument_Flu=data.get('Instrument_Flu'),
+            Day_night=data.get('Day_night'),
             pilot_id=Pilot.objects.get(pilot_id=user_id),
             aircraft_id=aircraft_obj,
             category_id=flight_cat_obj
