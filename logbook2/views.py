@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import User, Pilot, Checker, Aircraft, FlightCategory, FlightLog
 from .serializer import UserSerializer, AircraftSerializer, FlightCategorySerializer, FlightLogSerializer, PilotSerializer, CheckerSerializer
-
+from datetime import datetime
 # Create a new user
 @api_view(['POST'])
 def create_user(request):
@@ -90,20 +90,6 @@ def post_aircraft_for_user(request, user_id):
 
 
 
-# Insert flight category for the user
-@api_view(['POST'])
-def postF_category_for_user(request, user_id):
-     data = request.data     # get 
-     try:
-            user = User.objects.get(id=user_id)
-     except User.DoesNotExist:
-            return Response({"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-     
-     obj = FlightCategory.objects.create(engine = data['engine'],role = data['role'], mission=data['mission'])
-     
-     serialzed = FlightCategorySerializer(obj,many=False)
-    
-     return Response(serialzed.data)  # ends the serialized data back to the client as a response 
 
 @api_view(['POST'])
 def post_flight_log_for_user(request, user_id):
@@ -130,16 +116,24 @@ def post_flight_log_for_user(request, user_id):
             return Response({"detail": "User or Pilot not found"}, status=status.HTTP_404_NOT_FOUND)
         
         data = request.data
+        date_str = data.get('date')
+        take_off_time_str = data.get('Take_off_time')
+        landing_time_str = data.get('Landing_time')
+
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else None
+        take_off_time_obj = datetime.fromisoformat(take_off_time_str.replace('Z', '+00:00')) if take_off_time_str else None
+        landing_time_obj = datetime.fromisoformat(landing_time_str.replace('Z', '+00:00')) if landing_time_str else None
+
 
         obj = FlightLog.objects.create(
-            date=data.get('date'),
+            date=date_obj, #data.get('date'),
             route=data.get('route'),
             Additional_note=data.get('Additional_note'),
             duration=data.get('duration'),
             Pilot_in_comm=data.get('Pilot_in_comm'),
             Co_Pilot=data.get('Co_Pilot'),
-            Take_off_time=data.get('Take_off_time'),
-            Landing_time=data.get('Landing_time'),
+            Take_off_time=take_off_time_obj,
+            Landing_time=landing_time_obj,
             Instrument_Flu=data.get('Instrument_Flu'),
             Day_night=data.get('Day_night'),
             pilot_id=Pilot.objects.get(pilot_id=user_id),

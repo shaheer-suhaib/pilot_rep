@@ -3,9 +3,6 @@ from . import views
 
 urlpatterns = [
     path('api/new_user/', views.create_user, name='create_user'),
-    path('api/new_user/today_data/Aircraft/<int:user_id>/', views.post_aircraft_for_user, name='post_aircraft_for_user'),
-    path('api/new_user/today_data/FlightCategory/<int:user_id>/', views.postF_category_for_user, name='create_category_for_user'),
-    
     path('api/new_user/pilot_sub/', views.create_pilot, name='create_pilot'),
 
     path('api/new_user/checker_sub/', views.create_checker, name='create_checker'),
@@ -16,7 +13,7 @@ urlpatterns = [
 
     path('api/checker/filter/', views.filter_flight_logs, name='filter_flight_logs'),
 
-    path('api/checker/apply_marked/<int:pilot_id>' , views.apply_read,  name='apply_Read'),
+    path('api/checker/apply_marked/<int:mission_id>' , views.apply_read,  name='apply_Read'),
     path('api/checker/get_marked/' , views.get_marked,  name='Show Marked Tasks'),
 
 
