@@ -22,16 +22,46 @@ def create_user(request):
 
    
 
+# @api_view(['POST'])
+# def create_pilot(request):
+#     try:
+#         # Extract user data
+#         email = request.data.get('email')
+#         user_id = request.data.get('id')
+#         name = request.data.get('name')
+        
+#         # Create the User object
+#         user = User.objects.create_user(email=email, id=user_id,name=name)
+        
+#         # Create the Pilot object, linked to the user
+#         pilot = Pilot.objects.create(pilot_id=user)
+        
+#         # Send response
+#         serializer = PilotSerializer(pilot)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+#     except KeyError as e:
+#         return Response({"detail": f"Missing key: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+#     except Exception as e:
+#         return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['POST'])
 def create_pilot(request):
+    print("========= DEBUG PRODUCTION =========")
+    print("Full Request Data:", request.data)
+
+    email = request.data.get('email')
+    user_id = request.data.get('id')
+    name = request.data.get('name')
+
+    print("Email:", email)
+    print("User ID:", user_id)
+    print("Name:", name)
+    print("=====================================")
+
     try:
-        # Extract user data
-        email = request.data.get('email')
-        user_id = request.data.get('id')
-        name = request.data.get('name')
-        
         # Create the User object
-        user = User.objects.create_user(email=email, id=user_id,name=name)
+        user = User.objects.create_user(email=email, id=user_id, name=name)
         
         # Create the Pilot object, linked to the user
         pilot = Pilot.objects.create(pilot_id=user)
@@ -44,7 +74,6 @@ def create_pilot(request):
         return Response({"detail": f"Missing key: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @api_view(['POST'])
