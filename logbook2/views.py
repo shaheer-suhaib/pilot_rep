@@ -107,7 +107,7 @@ def postF_category_for_user(request, user_id):
 
 @api_view(['POST'])
 def post_flight_log_for_user(request, user_id):
-    if request.method == 'POST':
+   
        # print(request.data)
     
        # Step 1: Create Aircraft
