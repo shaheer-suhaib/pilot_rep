@@ -140,7 +140,7 @@ def post_flight_log_for_user(request, user_id):
             aircraft_id=aircraft_obj,
             category_id=flight_cat_obj
         )
-        obj.refresh_from_db()  # 🔥 Add this after create
+       # obj.refresh_from_db()  # 🔥 Add this after create
 
 
         serializer = FlightLogSerializer(obj, many=False)
