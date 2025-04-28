@@ -108,7 +108,7 @@ def postF_category_for_user(request, user_id):
 @api_view(['POST'])
 def post_flight_log_for_user(request, user_id):
     if request.method == 'POST':
-        print(request.data)
+       # print(request.data)
     
        # Step 1: Create Aircraft
         typee = request.data.get('typee')
@@ -117,9 +117,9 @@ def post_flight_log_for_user(request, user_id):
 
         
         # Step 2: Create FlightCategory
-        engine = request.data['engine']
-        role = request.data['role']
-        mission = request.data['mission']
+        engine = request.data.get['engine']
+        role = request.data.get['role']
+        mission = request.data.get['mission']
         flight_cat_obj = FlightCategory.objects.create(engine=engine, role=role, mission=mission)
         
       
@@ -154,11 +154,13 @@ def post_flight_log_for_user(request, user_id):
 
 
 @api_view(['PUT'])
-def apply_read(request, pilot_id):
+def apply_read(request, mission_id):
   try:
         # Fetch the FlightLog object with the specified pilot_id
-        obj = FlightLog.objects.filter(pilot_id=pilot_id)
+        obj = FlightLog.objects.filter(id=mission_id)
         obj.update(read=True)
+
+        #save might work........
         
       
 
