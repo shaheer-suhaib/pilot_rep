@@ -27,9 +27,14 @@ class FlightCategorySerializer(serializers.ModelSerializer):
         fields = [ 'engine', 'role','mission']
 
 class FlightLogSerializer(serializers.ModelSerializer):
-    pilot_id = PilotSerializer()
-    aircraft_id = AircraftSerializer()
-    category_id = FlightCategorySerializer()
+    # pilot_id = PilotSerializer()
+    # aircraft_id = AircraftSerializer()
+    # category_id = FlightCategorySerializer()
+
+    pilot_id = PilotSerializer(read_only=True)
+    aircraft_id = AircraftSerializer(read_only=True)
+    category_id = FlightCategorySerializer(read_only=True)
+
 
     class Meta:
         model = FlightLog
