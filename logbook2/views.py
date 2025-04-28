@@ -91,61 +91,129 @@ def post_aircraft_for_user(request, user_id):
 
 
 
-@api_view(['POST'])
-def post_flight_log_for_user(request, user_id):
+# @api_view(['POST'])
+# def post_flight_log_for_user(request, user_id):
    
-       # print(request.data)
+#        # print(request.data)
     
-       # Step 1: Create Aircraft
-        typee = request.data.get('typee')
-        tail_no = request.data.get('tail_no')
-        aircraft_obj = Aircraft.objects.create(typee=typee, tail_no=tail_no)
+#        # Step 1: Create Aircraft
+#         typee = request.data.get('typee')
+#         tail_no = request.data.get('tail_no')
+#         aircraft_obj = Aircraft.objects.create(typee=typee, tail_no=tail_no)
 
         
-        # Step 2: Create FlightCategory
-        engine = request.data.get('engine')
-        role = request.data.get('role')
-        mission = request.data.get('mission')
-        flight_cat_obj = FlightCategory.objects.create(engine=engine, role=role, mission=mission)
+#         # Step 2: Create FlightCategory
+#         engine = request.data.get('engine')
+#         role = request.data.get('role')
+#         mission = request.data.get('mission')
+#         flight_cat_obj = FlightCategory.objects.create(engine=engine, role=role, mission=mission)
         
       
-        # Step 3: Now create FlightLog
-        try:
-            pilot = Pilot.objects.get(pilot_id=user_id)
-        except (User.DoesNotExist, Pilot.DoesNotExist):
-            return Response({"detail": "User or Pilot not found"}, status=status.HTTP_404_NOT_FOUND)
+#         # Step 3: Now create FlightLog
+#         try:
+#             pilot = Pilot.objects.get(pilot_id=user_id)
+#         except (User.DoesNotExist, Pilot.DoesNotExist):
+#             return Response({"detail": "User or Pilot not found"}, status=status.HTTP_404_NOT_FOUND)
         
-        data = request.data
-        date_str = data.get('date')
-        take_off_time_str = data.get('Take_off_time')
-        landing_time_str = data.get('Landing_time')
+#         data = request.data
+#         date_str = data.get('date')
+#         take_off_time_str = data.get('Take_off_time')
+#         landing_time_str = data.get('Landing_time')
 
-        date_obj = datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else None
-        take_off_time_obj = datetime.fromisoformat(take_off_time_str.replace('Z', '+00:00')) if take_off_time_str else None
-        landing_time_obj = datetime.fromisoformat(landing_time_str.replace('Z', '+00:00')) if landing_time_str else None
-
-
-        obj = FlightLog.objects.create(
-            date=date_obj, #data.get('date'),
-            route=data.get('route'),
-            Additional_note=data.get('Additional_note'),
-            duration=data.get('duration'),
-            Pilot_in_comm=data.get('Pilot_in_comm'),
-            Co_Pilot=data.get('Co_Pilot'),
-            Take_off_time=take_off_time_obj,
-            Landing_time=landing_time_obj,
-            Instrument_Flu=data.get('Instrument_Flu'),
-            Day_night=data.get('Day_night'),
-            pilot_id=Pilot.objects.get(pilot_id=user_id),
-            aircraft_id=aircraft_obj,
-            category_id=flight_cat_obj
-        )
-       # obj.refresh_from_db()  # 🔥 Add this after create
+#         date_obj = datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else None
+#         take_off_time_obj = datetime.fromisoformat(take_off_time_str.replace('Z', '+00:00')) if take_off_time_str else None
+#         landing_time_obj = datetime.fromisoformat(landing_time_str.replace('Z', '+00:00')) if landing_time_str else None
 
 
-        serializer = FlightLogSerializer(obj, many=False)
+#         obj = FlightLog.objects.create(
+#             date=date_obj, #data.get('date'),
+#             route=data.get('route'),
+#             Additional_note=data.get('Additional_note'),
+#             duration=data.get('duration'),
+#             Pilot_in_comm=data.get('Pilot_in_comm'),
+#             Co_Pilot=data.get('Co_Pilot'),
+#             Take_off_time=take_off_time_obj,
+#             Landing_time=landing_time_obj,
+#             Instrument_Flu=data.get('Instrument_Flu'),
+#             Day_night=data.get('Day_night'),
+#             pilot_id=Pilot.objects.get(pilot_id=user_id),
+#             aircraft_id=aircraft_obj,
+#             category_id=flight_cat_obj
+#         )
+#        # obj.refresh_from_db()  # 🔥 Add this after create
 
-        return Response(serializer.data)
+
+#         serializer = FlightLogSerializer(obj, many=False)
+
+#         return Response(serializer.data)
+
+
+@api_view(['POST'])
+def post_flight_log_for_user(request, user_id):
+    print("=== Incoming request data ===")
+    print(request.data)
+    
+    # Step 1: Create Aircraft
+    typee = request.data.get('typee')
+    tail_no = request.data.get('tail_no')
+    print(f"Creating Aircraft with typee={typee}, tail_no={tail_no}")
+    aircraft_obj = Aircraft.objects.create(typee=typee, tail_no=tail_no)
+    print(f"Aircraft created: {aircraft_obj}")
+
+    # Step 2: Create FlightCategory
+    engine = request.data.get('engine')
+    role = request.data.get('role')
+    mission = request.data.get('mission')
+    print(f"Creating FlightCategory with engine={engine}, role={role}, mission={mission}")
+    flight_cat_obj = FlightCategory.objects.create(engine=engine, role=role, mission=mission)
+    print(f"FlightCategory created: {flight_cat_obj}")
+
+    # Step 3: Find Pilot
+    try:
+        pilot = Pilot.objects.get(pilot_id=user_id)
+        print(f"Pilot found: {pilot}")
+    except (User.DoesNotExist, Pilot.DoesNotExist) as e:
+        print(f"Error finding Pilot: {e}")
+        return Response({"detail": "User or Pilot not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    # Step 4: Prepare FlightLog data
+    data = request.data
+    date_str = data.get('date')
+    take_off_time_str = data.get('Take_off_time')
+    landing_time_str = data.get('Landing_time')
+    
+    print(f"Raw date: {date_str}, Take off time: {take_off_time_str}, Landing time: {landing_time_str}")
+    
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else None
+    take_off_time_obj = datetime.fromisoformat(take_off_time_str.replace('Z', '+00:00')) if take_off_time_str else None
+    landing_time_obj = datetime.fromisoformat(landing_time_str.replace('Z', '+00:00')) if landing_time_str else None
+
+    print(f"Parsed date_obj: {date_obj}, take_off_time_obj: {take_off_time_obj}, landing_time_obj: {landing_time_obj}")
+
+    # Step 5: Create FlightLog
+    obj = FlightLog.objects.create(
+        date=date_obj,
+        route=data.get('route'),
+        Additional_note=data.get('Additional_note'),
+        duration=data.get('duration'),
+        Pilot_in_comm=data.get('Pilot_in_comm'),
+        Co_Pilot=data.get('Co_Pilot'),
+        Take_off_time=take_off_time_obj,
+        Landing_time=landing_time_obj,
+        Instrument_Flu=data.get('Instrument_Flu'),
+        Day_night=data.get('Day_night'),
+        pilot_id=pilot,
+        aircraft_id=aircraft_obj,
+        category_id=flight_cat_obj
+    )
+
+    print(f"FlightLog created: {obj}")
+
+    serializer = FlightLogSerializer(obj, many=False)
+    print("Serialized data:", serializer.data)
+
+    return Response(serializer.data)
+
 
 
 @api_view(['PUT'])
