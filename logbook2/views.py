@@ -117,9 +117,9 @@ def post_flight_log_for_user(request, user_id):
 
         
         # Step 2: Create FlightCategory
-        engine = request.data.get['engine']
-        role = request.data.get['role']
-        mission = request.data.get['mission']
+        engine = request.data.get('engine')
+        role = request.data.get('role')
+        mission = request.data.get('mission')
         flight_cat_obj = FlightCategory.objects.create(engine=engine, role=role, mission=mission)
         
       
