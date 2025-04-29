@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 
 class CustomUserManager(UserManager):
+    
     def _create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError("You have not provided a valid e-mail address")
@@ -17,27 +18,7 @@ class CustomUserManager(UserManager):
             user.set_unusable_password()
         user.save(using=self._db)
         return user
-    # def _create_user(self, email, password, **extra_fields):
-    #         email = self.normalize_email(email)  # 🔥 First normalize
-    #         print("Incoming Email:", email)
-
-    #         if not email:
-    #             raise ValueError("You have not provided a valid e-mail address")
-                
-    #         user_id = extra_fields.pop('id', None)
-    #         if not user_id:
-    #             raise ValueError("You have not provided a valid ID")
-                
-    #         user = self.model(email=email, id=user_id, **extra_fields)
-
-    #         if password:
-    #             user.set_password(password)
-    #         else:
-    #             user.set_unusable_password()
-
-    #         user.save(using=self._db)
-    #         return user
-
+    
     def create_user(self, email=None, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)

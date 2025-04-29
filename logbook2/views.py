@@ -5,6 +5,8 @@ from .models import User, Pilot, Checker, Aircraft, FlightCategory, FlightLog
 from .serializer import UserSerializer, AircraftSerializer, FlightCategorySerializer, FlightLogSerializer, PilotSerializer, CheckerSerializer
 from datetime import datetime
 import json
+from django.contrib.auth.hashers import check_password
+
 # Create a new user
 @api_view(['POST'])
 def create_user(request):
@@ -30,9 +32,12 @@ def create_pilot(request):
         email = request.data.get('email')
         user_id = request.data.get('id')
         name = request.data.get('name')
+
+        password =  request.data.get('password')
+
         
         # Create the User object
-        user = User.objects.create_user(email=email, id=user_id,name=name)
+        user = User.objects.create_user(email=email, id=user_id,name=name,password=password)
         
         # Create the Pilot object, linked to the user
         pilot = Pilot.objects.create(pilot_id=user)
@@ -55,9 +60,11 @@ def create_checker(request):
      
         user_id = request.data['id']
         name = request.data['name']
+        password =  request.data.get('password')
+
         
         # Create the User object
-        user = User.objects.create_user(email=email, id=user_id, name= name)
+        user = User.objects.create_user(email=email, id=user_id, name= name,password= password)
         
         # Create the Checker object, linked to the user
         checker = Checker.objects.create(user_id=user)
@@ -70,6 +77,45 @@ def create_checker(request):
         return Response({"detail": f"Missing key: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+@api_view(['POST'])
+def login_p(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+    try:
+        pilot = Pilot.objects.get(pilot_id__email=email)
+        user = pilot.pilot_id  # The linked User object
+
+        if check_password(password, user.password):
+            return Response({"success": True}, status=status.HTTP_200_OK)
+        else:
+            return Response({"success": False, "detail": "Incorrect password"}, status=status.HTTP_401_UNAUTHORIZED)
+    except Pilot.DoesNotExist:
+        return Response({"success": False, "detail": "Email not found"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def login_C(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    try:
+        chk = Checker.objects.get(user_id__email=email)
+
+        if chk.user_id.password == password:
+            return Response({"success": True}, status=status.HTTP_200_OK)
+        else:
+            return Response({"success": False, "detail": "Incorrect password"}, status=status.HTTP_401_UNAUTHORIZED)
+    except Checker.DoesNotExist:
+        return Response({"success": False, "detail": "Email not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
 
 
 # Insert aircraft for the user
