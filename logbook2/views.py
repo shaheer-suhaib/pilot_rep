@@ -104,8 +104,9 @@ def login_C(request):
 
     try:
         chk = Checker.objects.get(user_id__email=email)
+        user = chk.user_id  # The linked User object
 
-        if chk.user_id.password == password:
+        if check_password(password, user.password):
             return Response({"success": True}, status=status.HTTP_200_OK)
         else:
             return Response({"success": False, "detail": "Incorrect password"}, status=status.HTTP_401_UNAUTHORIZED)
