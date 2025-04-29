@@ -4,8 +4,21 @@ from rest_framework.response import Response
 from .models import User, Pilot, Checker, Aircraft, FlightCategory, FlightLog
 from .serializer import UserSerializer, AircraftSerializer, FlightCategorySerializer, FlightLogSerializer, PilotSerializer, CheckerSerializer
 from datetime import datetime
-import json
+
 from django.contrib.auth.hashers import check_password
+from django.core.mail import send_mail
+
+
+
+def send_welcome_email(email, name):
+    subject = "Welcome to Pilot Logbook App"
+    message = f"Hi {name},\n\nWelcome aboard! Your account has been successfully created.\n\nFly safe!"
+    from_email = 'shaheersuhaib.pk@gmail.com'
+    recipient_list = [email]
+
+    send_mail(subject, message, from_email, recipient_list)
+
+
 
 # Create a new user
 @api_view(['POST'])
@@ -44,6 +57,8 @@ def create_pilot(request):
         
         # Send response
         serializer = PilotSerializer(pilot)
+
+       # send_welcome_email(email, name)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     except KeyError as e:
@@ -91,7 +106,7 @@ def login_p(request):
         user = pilot.pilot_id  # The linked User object
 
         if check_password(password, user.password):
-            return Response({"success": True}, status=status.HTTP_200_OK)
+            return Response({"success": True , "id": user.id , "name":user.name }, status=status.HTTP_200_OK)
         else:
             return Response({"success": False, "detail": "Incorrect password"}, status=status.HTTP_401_UNAUTHORIZED)
     except Pilot.DoesNotExist:
@@ -107,7 +122,7 @@ def login_C(request):
         user = chk.user_id  # The linked User object
 
         if check_password(password, user.password):
-            return Response({"success": True}, status=status.HTTP_200_OK)
+            return Response({"success": True,"id": user.id , "name":user.name }, status=status.HTTP_200_OK)
         else:
             return Response({"success": False, "detail": "Incorrect password"}, status=status.HTTP_401_UNAUTHORIZED)
     except Checker.DoesNotExist:
