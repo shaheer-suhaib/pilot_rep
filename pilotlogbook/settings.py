@@ -1,12 +1,24 @@
 
 from pathlib import Path
+import os
+from decouple import config
+import dj_database_url
 
+
+# SECRET_KEY = con'django-insecure-l93ghg^s#vehdg7kc#9bh(q5vbx&7o^6lg_qsku#h#3q547rp9'
+
+# DEBUG = True
+
+
+
+# DATABASE_URL="postgresql://postgres:zbePzzNAauboABuuIGwybYjgtjFbKqpW@maglev.proxy.rlwy.net:33291/railway"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-l93ghg^s#vehdg7kc#9bh(q5vbx&7o^6lg_qsku#h#3q547rp9'
 
-DEBUG = True
+
+SECRET_KEY = config('DJANGO_SECRET_KEY')
+DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['pilotrep-production.up.railway.app','127.0.0.1']
 
@@ -60,13 +72,6 @@ WSGI_APPLICATION = 'pilotlogbook.wsgi.application'
 
 
 
-import os
-from decouple import config
-import dj_database_url
-
-
-
-DATABASE_URL="postgresql://postgres:zbePzzNAauboABuuIGwybYjgtjFbKqpW@maglev.proxy.rlwy.net:33291/railway"
 
 
 
@@ -81,8 +86,8 @@ DATABASES = {
 
     # }
 
-   'default': dj_database_url.config(default=DATABASE_URL,conn_max_age=1800)     # (This will take database credentials from environment variables)
-        
+#    'default': dj_database_url.config(default=DATABASE_URL,conn_max_age=1800)     # (This will take database credentials from environment variables)
+     'default': dj_database_url.config(conn_max_age=1800)  
 
 
 }
