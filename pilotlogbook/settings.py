@@ -87,7 +87,7 @@ DATABASES = {
     # }
 
 #    'default': dj_database_url.config(default=DATABASE_URL,conn_max_age=1800)     # (This will take database credentials from environment variables)
-     'default': dj_database_url.config(conn_max_age=1800)  
+     'default': dj_database_url.config(default=config('DATABASE_URL'), conn_max_age=1800)  
 
 
 }
