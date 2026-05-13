@@ -1,10 +1,16 @@
-# Pilot Logbook Management System
+<img width="487" height="356" alt="image" src="https://github.com/user-attachments/assets/8ff0c610-f3e8-4e87-a216-e9cc25601264" /># Pilot Logbook Management System
 
 A comprehensive Django REST API application designed for aviation flight logging and management. This system enables pilots to record flight details while providing checkers with tools to review and validate flight logs.
 
 ## Project Overview
 
 ![alt text](thumbnail.PNG)
+
+<img width="242" height="329" alt="image" src="https://github.com/user-attachments/assets/85b93860-7f9d-49d5-a8c0-104b7edb83e7" />
+
+<img width="477" height="356" alt="image" src="https://github.com/user-attachments/assets/603f0109-a4ae-4aeb-92c6-4a7b3c2d3e91" />
+
+
 
 This aviation management platform delivers:
 
@@ -73,9 +79,7 @@ Ensure your development environment includes:
 
 ## Installation Instructions
 
-<img width="242" height="329" alt="image" src="https://github.com/user-attachments/assets/85b93860-7f9d-49d5-a8c0-104b7edb83e7" />
 
-![Uploading image.png…]()
 
 
 
