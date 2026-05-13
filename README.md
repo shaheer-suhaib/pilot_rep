@@ -73,6 +73,12 @@ Ensure your development environment includes:
 
 ## Installation Instructions
 
+<img width="242" height="329" alt="image" src="https://github.com/user-attachments/assets/85b93860-7f9d-49d5-a8c0-104b7edb83e7" />
+
+![Uploading image.png…]()
+
+
+
 ### 1. Clone the Repository
 
 ```bash
